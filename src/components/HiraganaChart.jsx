@@ -2,6 +2,8 @@
 import React from "react";
 import { HIRAGANA_ALL } from "../data/hiragana";
 import KatakanaChart from "./KatakanaChart";
+// new component has been aadded
+//new comment will be added 
 
 const Section = ({ title, items }) => (
   <div className="mb-8">
