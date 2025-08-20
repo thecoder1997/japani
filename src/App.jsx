@@ -11,6 +11,8 @@ const CombinedChart = lazy(() => import('./pages/CombinedChart'))
 const TestHiragana = lazy(() => import('./components/TestHiragana'))
 const TestKatakana = lazy(() => import('./components/TestKatakana'))
 const RowTest = lazy(() => import('./pages/RowTest'))
+const WriteHiragana = lazy(() => import('./components/WriteHiragana'))
+const WriteKatakana = lazy(() => import('./components/WriteKatakana'))
 const Landing = lazy(() => import('./pages/Landing'))
 
 function Page({ children }) {
@@ -38,6 +40,8 @@ function AnimatedRoutes({ user }) {
               <Route path="/testhiragana" element={<Page><TestHiragana /></Page>} />
               <Route path="/testkatakana" element={<Page><TestKatakana /></Page>} />
               <Route path="/row-test" element={<Page><RowTest /></Page>} />
+              <Route path="/write-hiragana" element={<Page><WriteHiragana /></Page>} />
+              <Route path="/write-katakana" element={<Page><WriteKatakana /></Page>} />
               <Route path="*" element={<Navigate to="/" />} />
             </>
           ) : (
@@ -140,6 +144,8 @@ export default function App() {
                   <NavItem to="/">Chart</NavItem>
                   <NavItem to="/testhiragana">Test Hiragana</NavItem>
                   <NavItem to="/testkatakana">Test Katakana</NavItem>
+                  <NavItem to="/write-hiragana">Write Hiragana</NavItem>
+                  <NavItem to="/write-katakana">Write Katakana</NavItem>
                 </>
               )}
             </div>
@@ -200,6 +206,8 @@ export default function App() {
                     <NavItem to="/">Chart</NavItem>
                     <NavItem to="/testhiragana">Test Hiragana</NavItem>
                     <NavItem to="/testkatakana">Test Katakana</NavItem>
+                    <NavItem to="/write-hiragana">Write Hiragana</NavItem>
+                    <NavItem to="/write-katakana">Write Katakana</NavItem>
                   </>
                 )}
                 <div className="h-px bg-gray-200 my-2" />
