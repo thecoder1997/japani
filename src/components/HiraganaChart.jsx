@@ -2,7 +2,7 @@
 import React from "react";
 import { HIRAGANA_ALL } from "../data/hiragana";
 import KatakanaChart from "./KatakanaChart";
-
+// new component has been aadded
 const Section = ({ title, items }) => (
   <div className="mb-8">
     <h3 className="text-xl font-semibold mb-3">{title}</h3>
