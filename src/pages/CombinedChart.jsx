@@ -5,6 +5,7 @@ import { FaVolumeUp } from "react-icons/fa";
 import { HIRAGANA_ALL } from "../data/hiragana";
 import { KATAKANA_ALL } from "../data/katakana";
 import { useNavigate } from "react-router-dom";
+import WriteTestCore from "../components/WriteTestCore";
 
 const ROWS = [
   ["a", "i", "u", "e", "o"],
@@ -28,6 +29,7 @@ const ROWS = [
 const CombinedChart = () => {
   const navigate = useNavigate();
   const [speechRate, setSpeechRate] = useState(0.9);
+  const [showWriteSections, setShowWriteSections] = useState(true);
 
   const speakJapanese = (text) => {
     window.speechSynthesis.cancel();
@@ -45,6 +47,8 @@ const CombinedChart = () => {
     const rowChars = row.map((romaji) => dataMap.get(romaji)).filter(Boolean);
     navigate("/row-test", { state: { rowChars } });
   };
+
+  const [writeModal, setWriteModal] = useState({ open: false, pool: [], label: "Hiragana" });
 
   const Section = ({ title, dataMap }) => (
     <section className="my-8">
@@ -76,13 +80,25 @@ const CombinedChart = () => {
                   </div>
                 );
               })}
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center gap-2">
                 <button
                   className="inline-flex items-center rounded-md bg-indigo-600 text-white px-4 py-2 text-sm font-semibold shadow-sm hover:bg-indigo-500"
                   onClick={() => startRowTestFromMap(row, dataMap)}
                 >
                   Test row
                 </button>
+                {showWriteSections && (
+                  <button
+                    className="inline-flex items-center rounded-md bg-emerald-600 text-white px-4 py-2 text-sm font-semibold shadow-sm hover:bg-emerald-500"
+                    onClick={() => {
+                      const rowChars = row.map((romaji) => dataMap.get(romaji)).filter(Boolean);
+                      const label = title.includes("Hiragana") ? "Hiragana" : "Katakana";
+                      setWriteModal({ open: true, pool: rowChars, label });
+                    }}
+                  >
+                    Write row
+                  </button>
+                )}
               </div>
             </div>
           ))}
@@ -111,8 +127,43 @@ const CombinedChart = () => {
         </div>
       </div>
 
+      <div className="flex items-center justify-center gap-2 mb-3">
+        <button
+          onClick={() => setShowWriteSections((v) => !v)}
+          className="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        >
+          {showWriteSections ? 'Hide write options' : 'Show write options'}
+        </button>
+        {showWriteSections && (
+          <>
+            <button
+              onClick={() => setWriteModal({ open: true, pool: Array.from(hiraganaMap.values()), label: 'Hiragana' })}
+              className="inline-flex items-center rounded-md bg-emerald-600 text-white px-3 py-2 text-sm font-semibold shadow-sm hover:bg-emerald-500"
+            >
+              Write Hiragana
+            </button>
+            <button
+              onClick={() => setWriteModal({ open: true, pool: Array.from(katakanaMap.values()), label: 'Katakana' })}
+              className="inline-flex items-center rounded-md bg-emerald-600 text-white px-3 py-2 text-sm font-semibold shadow-sm hover:bg-emerald-500"
+            >
+              Write Katakana
+            </button>
+          </>
+        )}
+      </div>
+
       <Section title="Hiragana Chart" dataMap={hiraganaMap} />
       <Section title="Katakana Chart" dataMap={katakanaMap} />
+
+      {writeModal.open && (
+        <WriteTestCore
+          title={`Write ${writeModal.label} (Row)`}
+          pool={writeModal.pool}
+          mode="modal"
+          scriptLabel={writeModal.label}
+          onClose={() => setWriteModal({ open: false, pool: [], label: "Hiragana" })}
+        />
+      )}
     </div>
   );
 };
